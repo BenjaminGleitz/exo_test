@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,13 +23,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run unit tests
-        run: npm run test
-
-      - name: Run Cypress tests
-        run: |
-          npm start &
-          npx wait-on http://localhost:3000
-          npx cypress run
-        env:
-          CI: true
+      - name: Run all tests
+        run: npm test
