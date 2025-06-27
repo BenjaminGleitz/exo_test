@@ -9,7 +9,7 @@
     "test": "jest --forceExit",
     "test:unit": "jest tests/unit --forceExit",
     "test:watch": "jest --watch --forceExit",
-    "test:coverage": "jest --coverage --forceExit"
+    "test:coverage": "jest --forceExit --coverage"
   },
   "author": "",
   "license": "ISC",

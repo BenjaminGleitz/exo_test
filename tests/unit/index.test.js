@@ -111,4 +111,57 @@ describe('Tests', () => {
         const remise = await request(app).get('/remise?prix=99.99&pourcentage=10');
         expect(remise.body.prixFinal).toBe(89.99);
     });
+
+    // Tests supplémentaires pour 100% de couverture
+    test('should return API information on root endpoint', async () => {
+        const res = await request(app).get('/');
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveProperty('name', 'API de conversion');
+    });
+
+    test('should handle invalid amount formats', async () => {
+        const res = await request(app).get('/convert?from=EUR&to=USD&amount=abc');
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe('Montant invalide');
+    });
+
+    test('should handle case insensitive currencies', async () => {
+        const res = await request(app).get('/convert?from=eur&to=usd&amount=100');
+        expect(res.status).toBe(200);
+        expect(res.body.from).toBe('EUR');
+        expect(res.body.to).toBe('USD');
+    });
+
+    test('should handle invalid VAT amount', async () => {
+        const res = await request(app).get('/tva?ht=abc&taux=20');
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe('Montant invalide');
+    });
+
+    test('should handle invalid discount amount', async () => {
+        const res = await request(app).get('/remise?prix=abc&pourcentage=10');
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe('Montant invalide');
+    });
+
+    test('should handle invalid VAT rate format', async () => {
+        const res = await request(app).get('/tva?ht=100&taux=abc');
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe('Taux de TVA invalide');
+    });
+
+    test('should handle zero amounts', async () => {
+        const convert = await request(app).get('/convert?from=EUR&to=USD&amount=0');
+        expect(convert.status).toBe(200);
+        expect(convert.body.convertedAmount).toBe(0);
+
+        const tva = await request(app).get('/tva?ht=0&taux=20');
+        expect(tva.status).toBe(200);
+        expect(tva.body.ttc).toBe(0);
+
+        const remise = await request(app).get('/remise?prix=0&pourcentage=10');
+        expect(remise.status).toBe(200);
+        expect(remise.body.prixFinal).toBe(0);
+    });
 });
