@@ -6,8 +6,13 @@ describe('Tests Fonctionnels - Routes API', () => {
         jest.spyOn(console, 'log').mockImplementation(() => {});
     });
 
-    afterAll(() => {
+    afterAll((done) => {
         jest.restoreAllMocks();
+        if (app && typeof app.close === 'function') {
+            app.close(done);
+        } else {
+            done();
+        }
     });
 
     describe('GET /', () => {

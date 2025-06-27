@@ -6,8 +6,13 @@ describe('Tests d\'Intégration - API avec services externes', () => {
         jest.spyOn(console, 'log').mockImplementation(() => {});
     });
 
-    afterAll(() => {
+    afterAll((done) => {
         jest.restoreAllMocks();
+        if (app && typeof app.close === 'function') {
+            app.close(done);
+        } else {
+            done();
+        }
     });
 
     describe('Simulation de services externes', () => {

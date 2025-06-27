@@ -6,8 +6,13 @@ describe('Tests', () => {
         jest.spyOn(console, 'log').mockImplementation(() => {});
     });
 
-    afterAll(() => {
+    afterAll((done) => {
         jest.restoreAllMocks();
+        if (app && typeof app.close === 'function') {
+            app.close(done);
+        } else {
+            done();
+        }
     });
 
     test('should validate positive amounts and reject invalid ones', async () => {
