@@ -17,14 +17,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '23'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm run test
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run functional tests
+        run: npm run test:functional
+
+      - name: Run integration tests
+        run: npm run test:integration
 
       - name: Generate coverage report
         run: npm run test:coverage
