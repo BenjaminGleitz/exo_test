@@ -23,14 +23,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run unit tests
-        run: npm run test:unit
-
-      - name: Run functional tests
-        run: npm run test:functional
-
-      - name: Run integration tests
-        run: npm run test:integration
+      - name: Run tests
+        run: npm run test
 
       - name: Generate coverage report
         run: npm run test:coverage
